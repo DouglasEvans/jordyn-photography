@@ -64,7 +64,7 @@ if(isset($_POST['email'])) {
     function died($error) {
         // your error code can go here
 		?>       
-        <h3 class="title">Error,there were error(s) found with the form you submitted.Please go back and fix these errors .Thank you.</h3>
+        <h3 class="title">Error, there were error(s) found with the form you submitted. Please go back and fix these errors. Thank you.</h3>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
         <p>&nbsp;</p>
@@ -85,6 +85,7 @@ if(isset($_POST['email'])) {
     if(!isset($_POST['name']) ||
         !isset($_POST['email']) ||
         !isset($_POST['telephone']) ||
+        !isset($_POST['howdidyouhear']) ||
         !isset($_POST['comments'])) {
 			?>
             <h1 class="title">Error</h1>
@@ -92,7 +93,7 @@ if(isset($_POST['email'])) {
 		</section><!-- end top -->
 
 		<section class="wrapper">
-        <p>We are sorry, but there appears to be a problem with the form you submitted.</p>
+        <p>We are sorry, but there appears to be a problem with the form you submitted. Make sure you have filled out every field.</p>
 		  </div>
 			<!-- end content -->
 		</section>
@@ -108,6 +109,7 @@ if(isset($_POST['email'])) {
     $first_name = $_POST['name']; // required
     $email_from = $_POST['email']; // required
     $telephone = $_POST['telephone']; // not required
+    $hear = $_POST['howdidyouhear']; // required
     $comments = $_POST['comments']; // required
      
     $error_message = "";
@@ -119,12 +121,16 @@ if(isset($_POST['email'])) {
   if(!preg_match($string_exp,$first_name)) {
     $error_message .= 'The Name you entered does not appear to be valid.<br />';
   }
+  if(strlen($hear) < 1) {
+    $error_message .= 'Please select how you heard about us.<br />';
+  }
   if(strlen($comments) < 2) {
     $error_message .= 'The Comments you entered do not appear to be valid.<br />';
   }
   if(strlen($error_message) > 0) {
-    died($error_message);
+    die($error_message);
   }
+
     $email_message = "Form details below.\n\n";
      
     function clean_string($string) {
@@ -135,6 +141,7 @@ if(isset($_POST['email'])) {
     $email_message .= "Name: ".clean_string($first_name)."\n";
     $email_message .= "Email: ".clean_string($email_from)."\n";
     $email_message .= "Telephone: ".clean_string($telephone)."\n";
+    $email_message .= "How did you hear about this: ".clean_string($hear)."\n";
     $email_message .= "Comments: ".clean_string($comments)."\n";
      
      
